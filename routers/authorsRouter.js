@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
             return res.status(400).json({ message: "author name required" });
         }
 
-        //+ проверить есть ли автор с таким именем
+        
         const foundAuthor = (await authors.findOne({ name: author.name })).toObject();
         if (foundAuthor) {
             return res.status(200).json({ author_id: foundAuthor._id});
