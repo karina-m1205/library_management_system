@@ -20,10 +20,10 @@ router.post("/", async (req, res) => {
         }
 
         //+ проверить есть ли автор с таким именем
-        const foundAuthor = (await authors.findOne({name: author.name})).toObject();
-        if(foundAuthor){
-            return res.status(200).json({author_id: foundAuthor._id});
-        } 
+        const foundAuthor = (await authors.findOne({ name: author.name })).toObject();
+        if (foundAuthor) {
+            return res.status(200).json({ author_id: foundAuthor._id});
+        }
 
         const auth = new authors();
         auth.name = author.name;
@@ -75,7 +75,7 @@ router.put("/:id", async (req, res) => {
             }
         }
         if (fieldsToUpdate.birthdate) {
-            fieldsToUpdate.birthdate = new Date(fieldsToUpdate.birthdate);            
+            fieldsToUpdate.birthdate = new Date(fieldsToUpdate.birthdate);
         }
 
         const result = await authors.findByIdAndUpdate(authorId, fieldsToUpdate, { new: true });

@@ -35,6 +35,15 @@ router.post("/", async (req, res) => {
             return res.status(500).json({ message: "author details are required" });
         }
 
+        const foundBook = (await books.findOne({ title: book.title, pages: book.pages })).toObject();
+        if (foundBook) {
+            const response = await axios.get(`http://localhost:${PORT}/authors/${foundBook.author_id}`);
+            const author = response.data;
+            if (book.author.name === author.name && new Date(book.author.birthdate) === author.birthdate) {
+                return res.status(400).json({ message: "books already exists" });
+            }
+        }
+
         let authorId;
         try {
             const response = await axios.post(`http://localhost:${PORT}/authors`, book.author);
@@ -43,7 +52,7 @@ router.post("/", async (req, res) => {
             return res.status(500).json({ message: err });
         }
 
-        // проверить есть ли книга с таким именем и автором(пока не сделала)       
+        
         const b = new books();
         b.title = book.title;
         b.pages = book.pages;
